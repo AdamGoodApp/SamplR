@@ -3,12 +3,21 @@
   "version": "0.1",
   "description": "Download music samples",
   "manifest_version": 2,
+  "permissions": [
+    "https://cdn-api-prd.sounds.com/",
+    "*://*.sounds.com/*",
+    "https://*/"
+  ],
   "content_scripts": [
     {
       "matches": ["https://sounds.com/*", "http://sounds.com/*"],
-      "js": ["scripts/content.js"]
+      "js": ["scripts/jquery-3.5.1.min.js", "scripts/content.js"]
     }
   ],
+  "background": {
+    "scripts": ["scripts/background.js"],
+    "persistent": false
+  },
   "browser_action": {
     "default_icon": "icon.png"
   }

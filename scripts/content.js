@@ -15,20 +15,56 @@ const addDownloadIcon = (sample) => {
   const soundTableAction = sample.getElementsByClassName(
     "sound-table-actions"
   )[0];
-  const element = `<div class='samplr-download-button' style='display:flex; cursor:pointer;'>${DOWNLOAD_ICON}</div>`;
-  soundTableAction.insertAdjacentHTML("afterbegin", element);
+  const href = getHref(sample);
+  const element = `<div class='samplr-download-button' style='display:flex; cursor:pointer;' data-sample-url=${href}>${DOWNLOAD_ICON}</div>`;
 
-  console.log(soundTableAction);
+  soundTableAction.insertAdjacentHTML("afterbegin", element);
+};
+
+const getHref = (row) => {
+  const container = row.getElementsByClassName("sound-table-sound-name")[0];
+  const aTag = container.getElementsByTagName("a")[0];
+  const href = aTag.href;
+
+  return href;
+};
+
+const getID = (string) => {
+  const split = string.split("/");
+  const id = split[split.length - 1];
+
+  return id;
+};
+
+const fetchSound = async (id) => {
+  chrome.runtime.sendMessage(id, (response) => {
+    const {
+      result: { sounds },
+    } = response;
+
+    const { name, preview_mp3, bpm } = sounds[0];
+
+    console.log(name, preview_mp3, bpm);
+  });
+};
+
+const handleOnClick = () => {
+  $(".samplr-download-button").on("click", ({ currentTarget }) => {
+    const href = currentTarget.getAttribute("data-sample-url");
+    const id = getID(href);
+
+    fetchSound(id);
+  });
 };
 
 const main = () => {
   const samples = Array.from(rows());
 
   samples.map((sample) => addDownloadIcon(sample));
+
+  handleOnClick();
 };
 
-main();
-
-// setTimeout(() => {
-//   main();
-// }, 1000);
+setTimeout(() => {
+  main();
+}, 1000);

@@ -44,8 +44,6 @@ const fetchSound = async (id) => {
 
     const { name, preview_mp3, bpm } = sounds[0];
 
-    console.log(name, preview_mp3, bpm);
-
     triggerFileDownload(preview_mp3);
   });
 };
@@ -64,13 +62,17 @@ const handleOnClick = () => {
 };
 
 const main = () => {
-  const samples = Array.from(rows());
+  setTimeout(() => {
+    const samples = Array.from(rows());
 
-  samples.map((sample) => addDownloadIcon(sample));
+    samples.map((sample) => addDownloadIcon(sample));
 
-  handleOnClick();
+    handleOnClick();
+  }, 1000);
 };
 
-setTimeout(() => {
+main();
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   main();
-}, 1000);
+});

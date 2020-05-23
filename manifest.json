@@ -6,7 +6,8 @@
   "permissions": [
     "https://cdn-api-prd.sounds.com/",
     "*://*.sounds.com/*",
-    "https://*/"
+    "tabs",
+    "activeTab"
   ],
   "content_scripts": [
     {

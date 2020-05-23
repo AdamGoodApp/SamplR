@@ -13,3 +13,11 @@ chrome.runtime.onMessage.addListener((id, sender, sendResponse) => {
 
   return true;
 });
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.url) {
+    chrome.tabs.sendMessage(tabId, {
+      url: changeInfo.url,
+    });
+  }
+});

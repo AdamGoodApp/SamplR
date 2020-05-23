@@ -45,7 +45,13 @@ const fetchSound = async (id) => {
     const { name, preview_mp3, bpm } = sounds[0];
 
     console.log(name, preview_mp3, bpm);
+
+    triggerFileDownload(preview_mp3);
   });
+};
+
+const triggerFileDownload = (previewMp3) => {
+  window.open(previewMp3, "_blank");
 };
 
 const handleOnClick = () => {
